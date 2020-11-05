@@ -1,0 +1,6 @@
+nik;jhlfrfufyfn;jhlfrfufyfn@gmail.com;12345;ADMIN
+user;user;user@user.user;12345;USER
+a;a;a;a;ADMIN
+a;c;b;d;USER
+q;w;w;w;USER
+j;j;j;j;USER
