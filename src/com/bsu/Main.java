@@ -18,7 +18,7 @@ public class Main {
 
         private final int label;
 
-        private UserRequests(int label) {
+        UserRequests(int label) {
             this.label = label;
         }
 
@@ -39,8 +39,8 @@ public class Main {
              ; FileWriter userWriter = new FileWriter(new File("users.txt"), true)
         ) {
             currentUser = new User();
-            List<User> userList = new ArrayList<User>();
-            List<Tour> tourList = new ArrayList<Tour>();
+            Set<User> userList = new HashSet<>();
+            Set<Tour> tourList = new HashSet<>();
             while (userScanner.hasNext()) {
                 String[] data = userScanner.nextLine().split(";");
                 userList.add(new User(data));
@@ -123,7 +123,7 @@ public class Main {
         }
     }
 
-    private static void tourStats(Date firDate, Date secDate, List<Tour> tourList) {
+    private static void tourStats(Date firDate, Date secDate, Set<Tour> tourList) {
         Set<String> usedCompanies = new HashSet<>();
         boolean companyFound = true;
 
@@ -168,7 +168,7 @@ public class Main {
         }
     }
 
-    private static void topNCompanies(Scanner sc, List<Tour> tourList) {
+    private static void topNCompanies(Scanner sc, Set<Tour> tourList) {
         System.out.print("Enter N: ");
         int N = Integer.parseInt(sc.nextLine());
 
@@ -223,7 +223,7 @@ public class Main {
         }
     }
 
-    private static Tour findTour(Scanner sc, List<Tour> tourList) {
+    private static Tour findTour(Scanner sc, Set<Tour> tourList) {
         System.out.println("Enter the tour number: ");
         String number = sc.nextLine();
 
@@ -253,7 +253,7 @@ public class Main {
         System.out.println("------------------------------");
     }
 
-    private static User userRegistration(Scanner sc, List<User> existingUsers) {
+    private static User userRegistration(Scanner sc, Set<User> existingUsers) {
         sc.useDelimiter("\\n"); ///might not work
 
         while (true) {
@@ -288,7 +288,7 @@ public class Main {
         }
     }
 
-    private static User signIn(Scanner sc, List<User> existingUsers) {
+    private static User signIn(Scanner sc, Set<User> existingUsers) {
         while (true) {
             System.out.print("Enter your login: ");
             String login = sc.nextLine();
@@ -312,7 +312,7 @@ public class Main {
         }
     }
 
-    private static void watchRecords(List<Tour> list){
+    private static void watchRecords(Set<Tour> list){
         for(Tour it:list){
             System.out.println(it.toString());
         }
