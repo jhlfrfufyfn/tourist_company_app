@@ -1,6 +1,5 @@
 package com.bsu;
 
-import java.awt.desktop.SystemSleepEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.text.DecimalFormat;
@@ -60,9 +59,9 @@ public class Main {
                     switch (request) {
                         case REGISTRATION:
                             User newUser = userRegistration(consScanner, userList);
-                            userWriter.write(newUser.getName()+";"+newUser.getLogin()+";"
-                                                +newUser.getEmail()+";"+newUser.getPassword()
-                                                +";"+newUser.getRole().toString()+System.lineSeparator());
+                            userWriter.write(newUser.getName() + ";" + newUser.getLogin() + ";"
+                                    + newUser.getEmail() + ";" + newUser.getPassword()
+                                    + ";" + newUser.getRole().toString() + System.lineSeparator());
                             break;
                         case SIGN_IN:
                             currentUser = signIn(consScanner, userList);
@@ -140,28 +139,28 @@ public class Main {
         }
         int n = companyNames.size();
 
-        for(String name:companyNames){
+        for (String name : companyNames) {
             List<Tour> stats = new ArrayList<>();
             Tour mostExpensive = new Tour();
             Tour mostCheap = new Tour();
             double numExp = 0.;
             double numCheap = 100000000000.;
-            for(Tour tour:tourList){
-                if(tour.getStartDate().after(firDate) && tour.getEndDate().before(secDate)){
+            for (Tour tour : tourList) {
+                if (tour.getStartDate().after(firDate) && tour.getEndDate().before(secDate)) {
                     stats.add(tour);
-                    if(tour.getPrice() < numCheap){
+                    if (tour.getPrice() < numCheap) {
                         numCheap = tour.getPrice();
                         mostCheap = tour;
                     }
-                    if(tour.getPrice() > numExp){
+                    if (tour.getPrice() > numExp) {
                         numExp = tour.getPrice();
                         mostExpensive = tour;
                     }
                 }
             }
-            System.out.println("Company: " + name );
-            System.out.println("Number of tours: " + stats.size()+";");
-            if(stats.size() != 0) {
+            System.out.println("Company: " + name);
+            System.out.println("Number of tours: " + stats.size() + ";");
+            if (stats.size() != 0) {
                 System.out.println("Most expensive: " + mostExpensive.toString());
                 System.out.println("Most cheap: " + mostCheap.toString());
             }
@@ -192,7 +191,7 @@ public class Main {
         int n = companyNames.size();
         List<Integer> numberOfGrades = new ArrayList<>(n);
         List<Double> ratingSum = new ArrayList<>(n);
-        for(int i=0;i<n;i++){
+        for (int i = 0; i < n; i++) {
             numberOfGrades.add(0);
             ratingSum.add(0.);
         }
@@ -210,16 +209,14 @@ public class Main {
             ratingSum.set(i, ratingSum.get(i) / (double) numberOfGrades.get(i));
         }
 
+        List<Pair<Double, String>> arr = new ArrayList<Pair<Double, String>>();
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n - 1; j++) {
-                if (ratingSum.get(j) < ratingSum.get(j + 1)) {
-                    Collections.swap(ratingSum, j, j + 1);
-                    Collections.swap(companyNames, j, j + 1);
-                }
-            }
+            arr.add(new Pair<Double, String>(ratingSum.get(i), companyNames.get(i)));
         }
+        arr.sort(new PairComparator());
+
         for (int i = 0; i < N; i++) {
-            System.out.println(companyNames.get(i) +": "+ df2.format(ratingSum.get(i)));
+            System.out.println(arr.get(i).element1 + ": " + df2.format(arr.get(i).element0));
         }
     }
 
@@ -312,13 +309,43 @@ public class Main {
         }
     }
 
-    private static void watchRecords(Set<Tour> list){
-        for(Tour it:list){
+    private static void watchRecords(Set<Tour> list) {
+        for (Tour it : list) {
             System.out.println(it.toString());
         }
     }
 
     private static void wrongRequest() {
         System.out.println("Error: wrong request type. Try again.");
+    }
+
+    public static class Pair<K, V> {
+
+        private final K element0;
+        private final V element1;
+
+        public static <K, V> Pair<K, V> createPair(K element0, V element1) {
+            return new Pair<K, V>(element0, element1);
+        }
+
+        Pair(K element0, V element1) {
+            this.element0 = element0;
+            this.element1 = element1;
+        }
+
+        public K getElement0() {
+            return element0;
+        }
+
+        public V getElement1() {
+            return element1;
+        }
+    }
+
+    static class PairComparator implements Comparator<Pair<Double, String>> {
+        @Override
+        public int compare(Pair<Double, String> c1, Pair<Double, String> c2) {
+            return (int) ((c1.element0 - c2.element0)*100.);
+        }
     }
 }
